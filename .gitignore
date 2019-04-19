@@ -3,3 +3,6 @@
 *.DS_Store
 *.pdf
 *.png
+*.egg-info
+build
+dist
