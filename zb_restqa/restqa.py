@@ -73,23 +73,26 @@ class RestTestsuiteDriver(object):
                             print("request_url: {}".format(request_url))
                             test_pre_function = self.function_dict.get(test_pre, none_function)
                             ctxt = test_pre_function(ctxt)
-                            resp = requests.request(test_http_method, request_url, **optional_params)
-                            resp = resp.json()
+                            try:
+                                resp = requests.request(test_http_method, request_url, **optional_params)
+                                resp = resp.json()
+                                locals = {
+                                    "ctxt": ctxt,
+                                    "resp": resp
+                                }
+                                for expression in test_assertions:
+                                    matches = re.findall(JSON_SELECTOR_REGEX, expression)
+                                    print("expression: {}/properties: {}".format(expression, matches))
+                                    for match in matches:
+                                        replace_expr = match[0].replace('resp\.', '')
+                                        replace_expr = "{}'{}'{}".format("jmespath.search(", replace_expr ,", resp)")
+                                        expression = expression.replace(match[0], replace_expr)
+                                    print("New expression: {}".format(expression))
+                                    eval(expression, None, locals)
+                            except Exception as e2:
+                                print("Exception occured while executing suite: {} / test: {} / {}".format(suite_name, test_name, e2))
                             test_post_function = self.function_dict.get(test_post, none_function)
                             ctxt = test_post_function(ctxt)
-                            locals = {
-                                "ctxt": ctxt,
-                                "resp": resp
-                            }
-                            for expression in test_assertions:
-                                matches = re.findall(JSON_SELECTOR_REGEX, expression)
-                                print("expression: {}/properties: {}".format(expression, matches))
-                                for match in matches:
-                                    replace_expr = match[0].replace('resp\.', '')
-                                    replace_expr = "{}'{}'{}".format("jmespath.search(", replace_expr ,", resp)")
-                                    expression = expression.replace(match[0], replace_expr)
-                                print("New expression: {}".format(expression))
-                                eval(expression, None, locals)
                         except Exception as e1:
                             print("Exception occured while executing suite: {} / test: {} / {}".format(suite_name, test_name, e1))
                     teardown_function = self.function_dict.get(suite_teardown, none_function)

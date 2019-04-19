@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name = "zb-restqa",
-    version = "0.0.1",
+    version = "0.0.2",
     license='MIT',
     author = "Manjunath Somashekar",
     author_email = "ujnamss@gmail.com",
