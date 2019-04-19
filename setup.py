@@ -3,6 +3,7 @@ import setuptools
 setuptools.setup(
     name = "zb-restqa",
     version = "0.0.1",
+    license='MIT',
     author = "Manjunath Somashekar",
     author_email = "ujnamss@gmail.com",
     packages = ["zb_restqa"],
@@ -31,6 +32,8 @@ This version requires Python 2.7 or later
         "slackclient",
         "future>=0.16.0",
         "configparser",
-        "zb_common"
+        "zb_common",
+        "jmespath",
+        "PyYAML"
     ],
 )
