@@ -20,9 +20,10 @@ class HTTPSettings(object):
     def __init__(self, base_url, headers):
         self.base_url = base_url
         self.headers = {}
-        for header in headers:
-            for key, value in header.items():
-                self.headers[key] = value
+        if headers:
+            for header in headers:
+                for key, value in header.items():
+                    self.headers[key] = value
 
 class Step(object):
 

@@ -110,9 +110,9 @@ class HTTPStepExecutor(StepExecutor):
         request_url_path = self.smart_replace(step.path, locals)
         request_url = "{}/{}".format(step.settings.base_url, request_url_path)
         print("request_url: {}".format(request_url))
-        # resp = requests.request(test_http_method, request_url, **optional_params)
-        # return resp.json()
-        return {}
+        resp = requests.request(step.method, request_url, **optional_params)
+        return resp.json()
+        # return {}
 
 class PythonStepExecutor(StepExecutor):
 
@@ -133,6 +133,27 @@ class E2ETestsuiteDriver(object):
             if func == None:
                 raise Exception("Function {} not in function_dict".format(func_name))
         return func
+
+    def run_flow(self, flow_config_file_path):
+        http_step_executor = HTTPStepExecutor()
+        py_step_executor = PythonStepExecutor()
+
+        parser = E2ESuiteParser()
+        ctxt = {}
+        e2e_test_suite = parser.parse(flow_config_file_path)
+        print("Executing flow/suite: {}".format(e2e_test_suite.name))
+
+        setup_func = self._get_func(e2e_test_suite.setup_func_name)
+        setup_func(ctxt)
+
+        for step in e2e_test_suite.steps:
+            if step.type == "HTTPStep":
+                http_step_executor.execute(step, self.function_dict, ctxt)
+            elif step.type == "PythonStep":
+                py_step_executor.execute(step, self.function_dict, ctxt)
+
+        teardown_func = self._get_func(e2e_test_suite.teardown_func_name)
+        teardown_func(ctxt)
 
     def run_tests(self):
         http_step_executor = HTTPStepExecutor()
