@@ -1,0 +1,38 @@
+suite:
+   name: sample_suite
+   setup: sample_setup
+   teardown: sample_teardown
+   http:
+     base_url: http://localhost:2345
+     headers:
+       - USEREMAIL: sew@gmail.com
+       - GMAIL: sew@gmail.com
+   steps:
+   - name: test_1
+     pre_step: pre_test_1
+     post_step: post_test_1
+     http:
+       path: ctxt.account_number/abc1
+       method: GET
+       headers:
+         - USEREMAIL: sew_or@gmail.com
+         - AUTHORIZATION: ctxt.bearer_token
+         - GMAIL: sew_or@gmail.com
+       payload:
+         color_theme: ACCENT_1
+         name: Times New Roman
+         size: 22
+         heading: Heading 1
+     assertions:
+       - resp.res1 == 123
+#       - resp.res2 + resp.res3 == 456
+       - resp.res3 and resp.res4 or resp.res5.res6== 789
+   - name: test_2
+     pre_step: pre_test_2
+     post_step: post_test_2
+     python:
+       invoke: py_function
+     assertions:
+       - resp.res1 == 123
+#       - resp.res2 + resp.res3 == 456
+       - resp.res3 and resp.res4 or resp.res5.res6== 789
