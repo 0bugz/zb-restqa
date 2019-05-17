@@ -7,7 +7,7 @@ setuptools.setup(
     author = "Manjunath Somashekar",
     author_email = "ujnamss@gmail.com",
     packages = ["zb_restqa"],
-    description = "A package containing the framework for REST API testing",
+    description = "A package containing the framework for REST APIs",
     url = "http://pypi.python.org/pypi/zb-restqa/",
     keywords = ["Automation", "REST", "API", "QA", "Declarative", "Framework"],
     classifiers = [
