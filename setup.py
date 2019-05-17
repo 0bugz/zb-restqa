@@ -21,12 +21,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
-    long_description = """\
-A package containing the framework for REST API testing
------------------------------------------------------
-
-This version requires Python 2.7 or later
-""",
+    long_description = "A package containing the framework for REST API testing. This version requires Python 2.7 or later",
     install_requires=[
         "requests",
         "slackclient",
